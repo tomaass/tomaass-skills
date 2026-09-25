@@ -10,6 +10,12 @@
       "source": "./plugins/handoff-to-cloud",
       "description": "Plan locally, then hand the committed plan to a Claude Code cloud session that executes it and opens a pull request. Close the laptop.",
       "version": "0.1.0"
+    },
+    {
+      "name": "worktree-guardrails",
+      "source": "./plugins/worktree-guardrails",
+      "description": "PreToolUse hooks that keep coding agents in git worktrees and off main.",
+      "version": "0.1.0"
     }
   ]
 }

@@ -1,0 +1,12 @@
+{
+  "name": "worktree-guardrails",
+  "displayName": "Worktree guardrails",
+  "version": "0.1.0",
+  "description": "PreToolUse hooks that keep coding agents in git worktrees: block edits on a feature branch in the primary checkout, and block commits landing on main.",
+  "author": {
+    "name": "Tomas Sorejs"
+  },
+  "repository": "https://github.com/tomaass/tomaass-skills",
+  "license": "MIT",
+  "keywords": ["hooks", "guardrails", "git", "worktrees"]
+}
