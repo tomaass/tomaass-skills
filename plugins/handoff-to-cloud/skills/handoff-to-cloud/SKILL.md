@@ -70,10 +70,13 @@ chmod 600 ~/.claude/handoff-cloud.<repo>.env
 4. **Confirm before firing.** This starts a billed, autonomous run and pushes a
    branch. Show the branch, the plan path, and what will happen. Wait for an
    explicit yes.
-5. **Push and fire.**
+5. **Push and fire.** Set `PLAN` to the plan path resolved in step 1.
 
 ```bash
 set -euo pipefail
+: "${PLAN:?set PLAN to the plan path}"
+# The credentials file is named after the repository directory.
+REPO="$(basename "$(git rev-parse --show-toplevel)")"
 source ~/.claude/handoff-cloud."$REPO".env
 : "${CC_ROUTINE_FIRE_URL:?run the one-time setup}"
 : "${CC_ROUTINE_TOKEN:?run the one-time setup}"
@@ -102,6 +105,11 @@ printf '%s\n' "$RESP" | jq -r '.claude_code_session_url // "no session URL — c
 
 6. **Report** the session URL. The run is autonomous from here; the user
    monitors and approves the resulting pull request.
+
+Project-specific facts the per-run prompt must carry — no database in the
+cloud, migrations left to the operator, checks that only run locally — belong
+in the repository's `CLAUDE.md`. Read it before writing the prompt and append
+what applies to step 4 of `TEXT`.
 
 ## Know the environment's limits before you write the prompt
 
