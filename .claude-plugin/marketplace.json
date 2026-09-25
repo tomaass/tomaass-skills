@@ -15,7 +15,7 @@
       "name": "worktree-guardrails",
       "source": "./plugins/worktree-guardrails",
       "description": "PreToolUse hooks that keep coding agents in git worktrees and off main.",
-      "version": "0.1.0"
+      "version": "0.2.0"
     }
   ]
 }

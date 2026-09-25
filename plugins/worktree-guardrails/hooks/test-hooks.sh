@@ -12,6 +12,11 @@ HOOKS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
+# Hermetic global git config, so the developer's own ~/.gitconfig cannot
+# switch the hooks off under the tests.
+export GIT_CONFIG_GLOBAL="$TMP/gitconfig"
+touch "$GIT_CONFIG_GLOBAL"
+
 pass=0; fail=0
 
 # check <expected-exit> <description> <hook> <json-payload> [cwd]
@@ -67,6 +72,21 @@ echo "  one hook fail open and the other fail closed."
 FRESH="$TMP/fresh"; mkdir -p "$FRESH" && (cd "$FRESH" && git init -q -b main)
 check 2 "first commit to main is still blocked"     block-main-commit.sh "$(bash_payload "git commit -m x")"  "$FRESH"
 check 0 "editing is still allowed"                  require-worktree.sh "$(edit_payload "$FRESH/new.txt")"    "$FRESH"
+
+echo
+echo "opt-out — git config worktree-guardrails.enabled"
+git -C "$REPO" config worktree-guardrails.enabled false
+git -C "$REPO" checkout -q main
+check 0 "commit on main, repo opted out"                block-main-commit.sh "$(bash_payload "git commit -m x")"         "$REPO"
+git -C "$REPO" checkout -q feature-in-primary
+check 0 "edit on a feature branch, repo opted out"      require-worktree.sh "$(edit_payload "$REPO/file.txt")"          "$REPO"
+git -C "$REPO" config --unset worktree-guardrails.enabled
+git config --global worktree-guardrails.enabled false
+check 0 "edit on a feature branch, off globally"        require-worktree.sh "$(edit_payload "$REPO/file.txt")"          "$REPO"
+git -C "$REPO" config worktree-guardrails.enabled true
+check 2 "off globally, repo opted back in (edit)"       require-worktree.sh "$(edit_payload "$REPO/file.txt")"          "$REPO"
+git -C "$REPO" checkout -q main
+check 2 "off globally, repo opted back in (commit)"     block-main-commit.sh "$(bash_payload "git commit -m x")"         "$REPO"
 
 echo
 if [ "$fail" -eq 0 ]; then

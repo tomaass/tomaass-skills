@@ -26,6 +26,8 @@ case "$cmd" in *".claude/worktrees/"*) exit 0 ;; esac
 # Repo context of the hook's cwd (== the command's cwd).
 gd=$(git rev-parse --absolute-git-dir 2>/dev/null)
 [ -z "$gd" ] && exit 0                                    # not a git repo -> allow
+# Opt-out, per repository or globally: git config worktree-guardrails.enabled false
+[ "$(git config --type=bool --get worktree-guardrails.enabled 2>/dev/null)" = false ] && exit 0
 gc=$(cd "$(git rev-parse --git-common-dir 2>/dev/null)" 2>/dev/null && pwd -P)
 [ "$gd" != "$gc" ] && exit 0                              # linked worktree -> allow
 # Branch name: symbolic-ref works on an unborn HEAD (fresh repo, no commits yet),
