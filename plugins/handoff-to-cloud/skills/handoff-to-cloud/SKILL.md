@@ -75,8 +75,9 @@ chmod 600 ~/.claude/handoff-cloud.<repo>.env
 ```bash
 set -euo pipefail
 : "${PLAN:?set PLAN to the plan path}"
-# The credentials file is named after the repository directory.
-REPO="$(basename "$(git rev-parse --show-toplevel)")"
+# The credentials file is named after the repository. Read it from the remote:
+# inside a worktree, the checkout directory has the worktree's name instead.
+REPO="$(basename -s .git "$(git remote get-url origin)")"
 source ~/.claude/handoff-cloud."$REPO".env
 : "${CC_ROUTINE_FIRE_URL:?run the one-time setup}"
 : "${CC_ROUTINE_TOKEN:?run the one-time setup}"
