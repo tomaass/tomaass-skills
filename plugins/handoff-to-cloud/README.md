@@ -22,6 +22,12 @@ Once per repository: a routine on claude.ai/code/routines with an API trigger,
 and its token stored in `~/.claude/handoff-cloud.<repo>.env`. The steps are in
 [SKILL.md](skills/handoff-to-cloud/SKILL.md#one-time-setup-per-repository).
 
+## After the PR opens
+
+Optional, but recommended: review it locally, in a session that did not write
+the code — [review-loop](../review-loop) does exactly that. The handoff works
+the same without it; the skill only mentions it once.
+
 ## Limits worth knowing
 
 - Routines belong to one account: every run appears as you and counts against

@@ -106,6 +106,12 @@ printf '%s\n' "$RESP" | jq -r '.claude_code_session_url // "no session URL — c
 
 6. **Report** the session URL. The run is autonomous from here; the user
    monitors and approves the resulting pull request.
+7. **Suggest a review, once.** The cloud session wrote the code *and* opened
+   the pull request, so nothing independent has looked at it yet. Mention in
+   one line that reviewing it locally in a fresh session is worth it —
+   `/review-loop <PR#>` if the review-loop plugin is installed, otherwise the
+   project's code review. It is a recommendation, not a step of the handoff:
+   do not start a review yourself, and do not repeat it if the user skips it.
 
 Project-specific facts the per-run prompt must carry — no database in the
 cloud, migrations left to the operator, checks that only run locally — belong

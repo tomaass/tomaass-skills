@@ -1,0 +1,27 @@
+{
+  "name": "review-loop",
+  "displayName": "Review loop",
+  "version": "0.1.0",
+  "description": "A bounded review → fix → re-review loop over one pull request, with stop rules taken from runs that went wrong. Never merges.",
+  "author": {
+    "name": "Tomas Sorejs"
+  },
+  "repository": "https://github.com/tomaass/tomaass-skills",
+  "license": "MIT",
+  "keywords": ["code-review", "pull-requests", "review-loop"],
+  "userConfig": {
+    "review_gates": {
+      "type": "string",
+      "title": "Review gate command",
+      "description": "Shell command that must pass before and after every review round, e.g. 'pnpm lint && pnpm test && pnpm build'. Leave empty to read the gates from the repository's CLAUDE.md.",
+      "required": false
+    },
+    "review_command": {
+      "type": "string",
+      "title": "Review command",
+      "description": "How this project runs a code review.",
+      "default": "/code-review",
+      "required": false
+    }
+  }
+}

@@ -9,13 +9,19 @@
       "name": "handoff-to-cloud",
       "source": "./plugins/handoff-to-cloud",
       "description": "Plan locally, then hand the committed plan to a Claude Code cloud session that executes it and opens a pull request. Close the laptop.",
-      "version": "0.2.0"
+      "version": "0.3.0"
     },
     {
       "name": "worktree-guardrails",
       "source": "./plugins/worktree-guardrails",
       "description": "PreToolUse hooks that keep coding agents in git worktrees and off main.",
       "version": "0.2.0"
+    },
+    {
+      "name": "review-loop",
+      "source": "./plugins/review-loop",
+      "description": "A bounded review → fix → re-review loop over one PR, with stop rules from runs that went wrong.",
+      "version": "0.1.0"
     }
   ]
 }

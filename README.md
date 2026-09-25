@@ -10,6 +10,7 @@ packaged so you can install just the one you need.
 | Skill | What it's for | Install |
 |---|---|---|
 | [handoff-to-cloud](plugins/handoff-to-cloud) | Plan locally, let a cloud session execute the plan and open a PR — laptop closed. | `/plugin install handoff-to-cloud@tomaass-skills` |
+| [review-loop](plugins/review-loop) | Review → fix → re-review one PR, and stop before the fixes start generating more findings than they close. | `/plugin install review-loop@tomaass-skills` |
 | [worktree-guardrails](plugins/worktree-guardrails) | Hooks that keep agents in git worktrees and stop commits landing on main. | `/plugin install worktree-guardrails@tomaass-skills` |
 
 Each skill says what transfers as-is and what you have to configure yourself
