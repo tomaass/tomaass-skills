@@ -1,0 +1,15 @@
+{
+  "name": "tomaass-skills",
+  "owner": {
+    "name": "Tomas Sorejs"
+  },
+  "description": "Claude Code skills from daily work, one plugin per skill.",
+  "plugins": [
+    {
+      "name": "handoff-to-cloud",
+      "source": "./plugins/handoff-to-cloud",
+      "description": "Plan locally, then hand the committed plan to a Claude Code cloud session that executes it and opens a pull request. Close the laptop.",
+      "version": "0.1.0"
+    }
+  ]
+}
