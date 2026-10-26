@@ -45,6 +45,7 @@ This is a guard against mistakes, not a security boundary: an agent that runs
 | Blocks | write to the primary checkout while on a non-default branch | `git commit` landing on the primary checkout's `main`/`master` |
 | Always allows | repos with `worktree-guardrails.enabled=false`; linked worktrees; the default branch; paths outside any git repo | repos with `worktree-guardrails.enabled=false`; non-commit commands; linked worktrees; feature branches; commands targeting `.claude/worktrees/` |
 | Escape hatch | — | put `[hotfix]` in the commit message |
+| Which repository | the edited file's | `git -C <dir> commit`, else the last literal `cd <dir>` before the commit, else the session's directory (a run-time path such as `cd $W` cannot be read) |
 
 **Fails open on purpose.** If the path is not in a git repo, or git context
 cannot be resolved, the hook allows. A guardrail that blocks work it does not
@@ -57,8 +58,13 @@ understand gets switched off within a week.
 ```
 
 Builds a throwaway repo with a linked worktree, drives both hooks with the same
-JSON payload Claude Code sends, and asserts the exit code across sixteen cases, including the opt-out in both
+JSON payload Claude Code sends, and asserts the exit code across twenty-two cases, including the opt-out in both
 directions.
+
+Six cover a session that sits in the primary checkout on `main` while the
+command moves elsewhere (`cd <worktree> && git commit`, `git -C <dir> commit`):
+the hook used to judge the session's directory, so it blocked worktree commits
+after a `cd` and let `git -C <primary> commit` through.
 
 Two of them are regression cases for a real bug: on a fresh repo with no
 commits, `git rev-parse --abbrev-ref HEAD` returns the literal string `HEAD`,
