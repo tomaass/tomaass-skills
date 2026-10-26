@@ -66,6 +66,17 @@ check 0 "commit inside a linked worktree"           block-main-commit.sh "$(bash
 check 0 "a command that is not a commit at all"     block-main-commit.sh "$(bash_payload "ls -la")"                   "$REPO"
 
 echo
+echo "regression — the commit runs where the command says, not where the session is"
+echo "  The session cwd is the primary checkout on main; the command moves to a worktree."
+git -C "$REPO" checkout -q main
+check 0 "cd <worktree> && git commit"               block-main-commit.sh "$(bash_payload "cd $TMP/wt && git add -A && git commit -q -m x")" "$REPO"
+check 0 "git -C <worktree> commit"                  block-main-commit.sh "$(bash_payload "git -C $TMP/wt commit -m x")"                  "$REPO"
+check 2 "git -C <primary on main> commit"           block-main-commit.sh "$(bash_payload "git -C $REPO commit -m x")"                    "$TMP/wt"
+check 2 "cd <primary on main> && git commit"        block-main-commit.sh "$(bash_payload "cd $REPO && git commit -m x")"                 "$TMP/wt"
+check 2 "cd <worktree>, then back, then commit"     block-main-commit.sh "$(bash_payload "cd $TMP/wt && ls; cd $REPO && git commit -m x")" "$TMP/wt"
+check 2 "cd to a run-time path keeps the cwd rule"  block-main-commit.sh "$(bash_payload "cd \$W && git commit -m x")"                   "$REPO"
+
+echo
 echo "regression — unborn HEAD (a repo with no commits yet)"
 echo "  rev-parse --abbrev-ref HEAD returns the string \"HEAD\" here, which made"
 echo "  one hook fail open and the other fail closed."
